@@ -1,0 +1,16 @@
+(defproblem problem compfin
+
+  ; The initial facts of the world. This world has two locactions local together. "Me" (the agent
+  ; in this world) starts in one resource and the person you're supposed to allocate "hello" to is in the
+  ; other. Note that HTN domains don't have to be about explicit agents in worlds. For example, the
+  ; blocks world and freecell domains don't have a represented agent in a world - instead there is a
+  ; world containing a "problem" which the system is trying to solve.
+   
+   ((recipe gold-ring gold)
+    (factory smelter)
+    (exists smelter sf)
+    (exists Josh sc)
+    (exists gold sf))
+
+   ((allocate gold-ring Josh sc))
+ )

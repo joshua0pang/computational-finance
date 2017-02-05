@@ -1,0 +1,39 @@
+; Computational Finance
+
+; predicates: resource, need-resource, local
+; operators: request, allocate
+; methods: allocate-to-person, request-path
+; the procedural rhetoric is a twist on my computaitonal finance thesis.
+; in my thesis, i talk about using computer algorithms to "pay people to vote"
+; here, i remove the idea of money altogether — cut out the middle man
+; on a ship, a sailor doesn't spend money to get coffee.
+; he just goes and gets it, and the accounting book is updated.
+; things are rationed rationally.
+; so, a little proof of concept about a society where algorithms allocate resources rationally.
+; fuller says, "cosmic accounting" on "spaceship earth"
+; eventually, the idea is sort of 'reverse Sims'
+; that is, an algorithm meets our needs like we meet the ; Sims' needs. 
+;https://en.wikipedia.org/wiki/Producer%E2%80%93consumer_problem
+;goldilocks
+(defdomain compfin 
+  (
+  	(:operator (!move ?res ?loc1 ?loc2 ?per)
+  	    ((exists ?res ?loc1) (exists ?per ?loc2))
+  	    ((exists ?res ?loc1))
+  	    ())
+	(:operator (!make ?res ?fac ?loc)
+		((factory ?fac) (exists ?fac ?loc) (exists ?prereq ?loc))
+		((exists ?prereq ?loc))
+		((exists ?res ?loc)))
+  	(:method (allocate ?res ?per ?loc-per)
+  		((exists ?res ?loc-res))
+  		((!move ?res ?loc-res ?loc-per ?per))
+  		((recipe ?res ?prereq) (exists ?prereq ?loc-fac) (factory ?fac ?loc-fac) (exists ?fac ?loc-fac))
+  		((!make ?res ?fac ?loc-fac)
+  		 (!move ?res ?loc-fac ?loc-per ?per))
+        ((recipe ?res ?prereq) (exists ?fac ?loc-fac) (factory ?fac) (exists ?prereq ?loc-prereq))
+        ((!move ?prereq ?loc-prereq ?loc-fac ?fac) (!make ?res ?fac ?loc-fac) (!move ?res ?loc-fac ?loc-per ?per))
+  		)
+
+   )
+  )
