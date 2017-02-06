@@ -1,8 +1,5 @@
 ; Computational Finance
 
-; predicates: resource, need-resource, local
-; operators: request, allocate
-; methods: allocate-to-person, request-path
 ; the procedural rhetoric is a twist on my computaitonal finance thesis.
 ; in my thesis, i talk about using computer algorithms to "pay people to vote"
 ; here, i remove the idea of money altogether — cut out the middle man
@@ -13,27 +10,31 @@
 ; fuller says, "cosmic accounting" on "spaceship earth"
 ; eventually, the idea is sort of 'reverse Sims'
 ; that is, an algorithm meets our needs like we meet the ; Sims' needs. 
-;https://en.wikipedia.org/wiki/Producer%E2%80%93consumer_problem
-;goldilocks
+
+
+; here's the necessary opening clauses
 (defdomain compfin 
   (
-  	(:operator (!move ?res ?loc1 ?loc2 ?per)
-  	    ((exists ?res ?loc1) (exists ?per ?loc2))
-  	    ((exists ?res ?loc1))
-  	    ())
+  	; here's my move operator focsued on getting things to people. 
+  	(:operator (!move ?res ?loc1 ?loc2 ?per) ; this is the input variables.
+  	    ((exists ?res ?loc1) (exists ?per ?loc2)) ; this is the preconditions 
+  	    ((exists ?res ?loc1)) ; this is the delete operator
+  	    ()) ; this is the add operator
+  	; here's my make operator focused on getting resources in the wild to a factory.
 	(:operator (!make ?res ?fac ?loc)
-		((factory ?fac) (exists ?fac ?loc) (exists ?prereq ?loc))
+		((factory ?fac) (exists ?fac ?loc) (exists ?prereq ?loc)) ; ?prereq has to do with the recipe function i wrote
 		((exists ?prereq ?loc))
 		((exists ?res ?loc)))
+	; this is my main method which uses the operators to complete the resource allocation task.
   	(:method (allocate ?res ?per ?loc-per)
   		((exists ?res ?loc-res))
   		((!move ?res ?loc-res ?loc-per ?per))
-  		((recipe ?res ?prereq) (exists ?prereq ?loc-fac) (factory ?fac ?loc-fac) (exists ?fac ?loc-fac))
+  		((recipe ?res ?prereq) (exists ?prereq ?loc-fac) (factory ?fac ?loc-fac) (exists ?fac ?loc-fac)) 
+  		; for example, gold is ?prereq for gold-ring
   		((!make ?res ?fac ?loc-fac)
   		 (!move ?res ?loc-fac ?loc-per ?per))
-        ((recipe ?res ?prereq) (exists ?fac ?loc-fac) (factory ?fac) (exists ?prereq ?loc-prereq))
+        ((recipe ?res ?prereq) (exists ?fac ?loc-fac) (factory ?fac) (exists ?prereq ?loc-prereq)) 
         ((!move ?prereq ?loc-prereq ?loc-fac ?fac) (!make ?res ?fac ?loc-fac) (!move ?res ?loc-fac ?loc-per ?per))
   		)
-
-   )
+    )
   )

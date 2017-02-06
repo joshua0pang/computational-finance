@@ -1,16 +1,14 @@
-(defproblem problem compfin
+; Here I must define the world for the computational finance domain file to operate over. The computational domain is the producer in the classic producer consumer problem. For a proof of concept, this is fine.
+; It would be better if all I had to do was give my name and address and my needed object on a standard form.
+; Instead, I also need to describe all the industrial components, which is not consumer friendly. These would be under the hood normally.
 
-  ; The initial facts of the world. This world has two locactions local together. "Me" (the agent
-  ; in this world) starts in one resource and the person you're supposed to allocate "hello" to is in the
-  ; other. Note that HTN domains don't have to be about explicit agents in worlds. For example, the
-  ; blocks world and freecell domains don't have a represented agent in a world - instead there is a
-  ; world containing a "problem" which the system is trying to solve.
-   
+(defproblem problem compfin   
    ((recipe gold-ring gold)
     (factory smelter)
-    (exists smelter sf)
+    (exists smelter sf) ; in this example the smelter is the factory
     (exists Josh sc)
     (exists gold sf))
 
+; here I make a call to the main method using the standard form. This would be closer to the form that a consumer would fill out.
    ((allocate gold-ring Josh sc))
  )
